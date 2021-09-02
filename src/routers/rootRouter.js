@@ -5,16 +5,16 @@ import {
   postJoin,
   postLogin,
 } from "../controllers/userController";
-import { protectorMiddleware } from "../middlewares";
+import { publicOnlyMiddleware } from "../middlewares";
 import { home, search } from "../controllers/videoController";
 
 const rootRouter = express.Router();
 
 rootRouter.get("/", home);
-rootRouter.route("/join").all(protectorMiddleware).get(getJoin).post(postJoin);
+rootRouter.route("/join").all(publicOnlyMiddleware).get(getJoin).post(postJoin);
 rootRouter
   .route("/login")
-  .all(protectorMiddleware)
+  .all(publicOnlyMiddleware)
   .get(getLogin)
   .post(postLogin);
 rootRouter.get("/search", search);
