@@ -233,7 +233,6 @@ export const postEdit = async (req, res) => {
       { new: true }
     );
     req.session.user = updatedUser;
-    console.log("all change");
     return res.redirect("/users/edit");
   }
 };
