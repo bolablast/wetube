@@ -7,6 +7,7 @@ export const home = async (req, res) => {
     .populate("owner");
   return res.render("home", { pageTitle: "Home", videos });
 };
+
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id).populate("owner");
@@ -15,6 +16,7 @@ export const watch = async (req, res) => {
   }
   return res.render("watch", { pageTitle: video.title, video });
 };
+
 export const getEdit = async (req, res) => {
   const { id } = req.params;
   const {
@@ -29,18 +31,20 @@ export const getEdit = async (req, res) => {
   }
   return res.render("edit", { pageTitle: `Editing`, video });
 };
+
 export const postEdit = async (req, res) => {
   const { id } = req.params;
   const {
     user: { _id },
   } = req.session;
   if (String(video.owner) !== String(_id)) {
+    req.flash("error", "You are not the owner of the video");
     return res.status(403).redirect("/");
   }
   const {
     body: { title, description, hashtags },
   } = req;
-  const video = await Video.exists({ _id: id });
+  const video = await Video.findById({ _id: id });
   if (!video) {
     res.render("404", { pageTitle: `Video not found` });
   }
@@ -49,7 +53,8 @@ export const postEdit = async (req, res) => {
     description,
     hashtags: Video.formatHashtags(hashtags),
   });
-  res.redirect(`/videos/${id}`);
+  req.flash("success", "Changes saved.");
+  return res.redirect(`/videos/${id}`);
 };
 
 export const getUpload = (req, res) => {
@@ -63,14 +68,15 @@ export const postUpload = async (req, res) => {
     },
   } = req;
   const {
-    file: { path },
+    files: { video, thumb },
   } = req;
   const { title, description, hashtags } = req.body;
   try {
     const newVideo = await Video.create({
       title,
       description,
-      fileUrl: path,
+      fileUrl: video[0].path,
+      thumbUrl: "/" + thumb[0].path,
       owner: _id,
       hashtags: Video.formatHashtags(hashtags),
     });
@@ -97,6 +103,7 @@ export const deleteVideo = async (req, res) => {
     return res.status(404).render("404", { pageTitle: "Video not found." });
   }
   if (String(video.owner) !== String(_id)) {
+    req.flash("error", "Not authorized");
     return res.status(403).redirect("/");
   }
 
