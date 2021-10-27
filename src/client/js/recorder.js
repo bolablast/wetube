@@ -71,7 +71,6 @@ const handleStart = () => {
   actionBtn.innerText = "Recording";
   actionBtn.disabled = true;
   actionBtn.removeEventListener("click", handleStart);
-  actionBtn.addEventListener("click", handleStop);
   recorder = new MediaRecorder(stream);
   recorder.ondataavailable = (evnet) => {
     videoFile = URL.createObjectURL(event.data);
@@ -81,7 +80,6 @@ const handleStart = () => {
     video.play();
     actionBtn.innerText = "Download";
     actionBtn.disabled = false;
-
     actionBtn.addEventListener("click", handleDownload);
   };
   recorder.start();

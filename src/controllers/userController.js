@@ -1,5 +1,4 @@
 import User from "../models/User";
-import Video from "../models/Video";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
@@ -25,6 +24,7 @@ export const postJoin = async (req, res) => {
   }
   try {
     await User.create({
+      avatarUrl: "/default/default.png",
       name,
       username,
       email,
@@ -161,15 +161,14 @@ export const postEdit = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       _id,
       {
-        avatarUrl: file ? file.path : avatarUrl,
+        avatarUrl: file ? "/" + file.path : avatarUrl,
         name,
         location,
       },
       { new: true }
     );
     req.session.user = updatedUser;
-    console.log("no change");
-    return res.redirect("/users/edit");
+    return res.redirect("/");
   } else if (
     req.session.user.username !== username &&
     req.session.user.email == email
@@ -178,18 +177,16 @@ export const postEdit = async (req, res) => {
       const updatedUser = await User.findByIdAndUpdate(
         _id,
         {
-          avatarUrl: file ? file.path : avatarUrl,
+          avatarUrl: file ? "/" + file.path : avatarUrl,
           name,
           username,
           location,
         },
         { new: true }
       );
-      console.log("username true");
       req.session.user = updatedUser;
-      return res.redirect("/users/edit");
+      return res.redirect("/");
     } else {
-      console.log("username false");
       return res.render("edit-profile", {
         pageTitle: "Edit Profile",
         errorMessage: "The username is already taken",
@@ -203,18 +200,16 @@ export const postEdit = async (req, res) => {
       const updatedUser = await User.findByIdAndUpdate(
         _id,
         {
-          avatarUrl: file ? file.path : avatarUrl,
+          avatarUrl: file ? "/" + file.path : avatarUrl,
           name,
           email,
           location,
         },
         { new: true }
       );
-      console.log("email true");
       req.session.user = updatedUser;
-      return res.redirect("/users/edit");
+      return res.redirect("/");
     } else {
-      console.log("email false");
       return res.render("edit-profile", {
         pageTitle: "Edit Profile",
         errorMessage: "The email is already taken",
@@ -224,7 +219,7 @@ export const postEdit = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       _id,
       {
-        avatarUrl: file ? file.path : avatarUrl,
+        avatarUrl: file ? "/" + file.path : avatarUrl,
         name,
         email,
         username,
@@ -233,7 +228,7 @@ export const postEdit = async (req, res) => {
       { new: true }
     );
     req.session.user = updatedUser;
-    return res.redirect("/users/edit");
+    return res.redirect("/");
   }
 };
 

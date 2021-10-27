@@ -28,10 +28,28 @@ block content
             a(href=`${video.id}/edit`) Edit Video &rarr;
             br
             a(href=`${video.id}/delete`) Delete Video &rarr;
+    if loggedIn
+        div.video__add-comments 
+            form.video__comment-form#commentForm(data-url=loggedInUser.avatarUrl, data-username=loggedInUser.username) 
+                textarea(cols="30", rows="10", placeholder="Write a nice comment...")
+                input(type="submit", value="Add Comment")
     div.video__comments 
-        form.video__comment-form#commentForm    
-            textarea(cols="30", rows="10", placeholder="Write a nice comment...")
-            button Add Comment
+        ul 
+            each comment in video.comments.reverse()
+                li.video__comment(data-id=comment.id)
+                    img(src=comment.avatarUrl,crossorigin)
+                    div.video__comment_info 
+                        div.video__comment_owner
+                            span=comment.username
+                            span.video__comment_time=comment.timeString
+                        div.video__comment_main
+                            div.video__comment_main_text
+                                span.text #{comment.text}
+                            if String(comment.owner) == String(loggedInUser._id) 
+                                div.video__comment_main_btn
+                                    span.del ❌
+                                    i.fas.fa-edit.edit
 block scripts 
     script(src="/static/js/videoPlayer.js")
-    script(src="/static/js/commentSection.js")
+    if loggedIn
+        script(src="/static/js/commentSection.js")
