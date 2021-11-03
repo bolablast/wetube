@@ -12,3 +12,57 @@
     font-size: 18px;
   }
 }
+
+.typeOfSection {
+  border-radius: 10px;
+  display: flex;
+  border: 1px solid white;
+  margin-bottom: 50px;
+  section {
+    cursor: pointer;
+    border-radius: 10px;
+    width: 33.33%;
+    height: 100px;
+    background-color: tomato;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.comment-grid_container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .comment-grid_container__img {
+    display: flex;
+    img {
+      width: 250px;
+      height: 120px;
+    }
+  }
+  .comment-grid_container_info_box {
+    display: flex;
+    align-items: center;
+  }
+  .comment-grid_container__info {
+    height: 150px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  .comment-grid_container__text {
+    max-width: 500px;
+    word-wrap: break-word;
+  }
+}
+
+.none {
+  display: none;
+}

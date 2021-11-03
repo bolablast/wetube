@@ -9,6 +9,11 @@ const commentSchema = new mongoose.Schema({
   createdAt: { type: Date, required: true, default: Date.now },
   beforeTime: { type: Number, default: 0 },
   timeString: { type: String, default: "방금 전" },
+  like: { type: Number, default: 0 },
+  dislike: { type: Number, default: 0 },
+  likeUser: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  dislikeUser: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  edited: { type: Boolean, default: false },
 });
 
 const Comment = mongoose.model("Comment", commentSchema);

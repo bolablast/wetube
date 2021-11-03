@@ -12,6 +12,14 @@
       display: block;
       margin-top: 10px;
     }
+    .video-mixin__meta_container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      .video-mixin__meta-time {
+        font-size: 15px;
+      }
+    }
     .video-mixin__meta {
       margin-top: 5px;
       font-size: 12px;

@@ -1,0 +1,43 @@
+mixin likeIcon(type)
+    if type === "like" 
+        i.fas.fa-thumbs-up.fa-2x#likeIcon
+        span#likeNumber=video.like
+        i.far.fa-thumbs-down.fa-2x#dislikeIcon
+        span#dislikeNumber=video.dislike
+    else if type === "dislike"
+        i.far.fa-thumbs-up.fa-2x#likeIcon
+        span#likeNumber=video.like
+        i.fas.fa-thumbs-down.fa-2x#dislikeIcon
+        span#dislikeNumber=video.dislike
+    else if type === "no"
+        i.far.fa-thumbs-up.fa-2x#likeIcon
+        span#likeNumber=video.like
+        i.far.fa-thumbs-down.fa-2x#dislikeIcon
+        span#dislikeNumber=video.dislike
+    else   
+        i.far.fa-thumbs-up.fa-2x
+        span#likeNumber=video.like
+        i.far.fa-thumbs-down.fa-2x
+        span#dislikeNumber=video.dislike
+
+mixin likeIconTwo(type, comment)
+    if type === "like" 
+        i.fas.fa-thumbs-up.fa-x.likeCommentIcon
+        span.likeCommentNumber=comment.like
+        i.far.fa-thumbs-down.fa-x.dislikeCommentIcon
+        span.dislikeCommentNumber=comment.dislike
+    else if type === "dislike"
+        i.far.fa-thumbs-up.fa-x.likeCommentIcon
+        span.likeCommentNumber=comment.like
+        i.fas.fa-thumbs-down.fa-x.dislikeCommentIcon
+        span.dislikeCommentNumber=comment.dislike
+    else if type === "no"
+        i.far.fa-thumbs-up.fa-x.likeCommentIcon
+        span.likeCommentNumber=comment.like
+        i.far.fa-thumbs-down.fa-x.dislikeCommentIcon
+        span.dislikeCommentNumber=comment.dislike 
+    else 
+        i.far.fa-thumbs-up.fa-x
+        span.likeCommentNumber=comment.like
+        i.far.fa-thumbs-down.fa-x
+        span.dislikeCommentNumber=comment.dislike 

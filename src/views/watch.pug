@@ -1,5 +1,7 @@
 extends base
 
+include mixins/like
+
 block content 
     div#videoContainer(data-id=video.id)
         video(src="/" + video.fileUrl)
@@ -23,6 +25,16 @@ block content
         p.video__title=video.title
         small.video__owner Uploaded by 
             a(href=`/users/${video.owner._id}`)=video.owner.name 
+            if (!loggedIn)
+                +likeIcon("notLog")
+                span 좋아요 하시려면 먼저 로그인 하세요
+            else
+                if (loggedInUser.likeVideo.includes(String(video._id)))
+                    +likeIcon("like")
+                else if (loggedInUser.dislikeVideo.includes(String(video._id)))
+                    +likeIcon("dislike")
+                else 
+                    +likeIcon("no") 
         small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
         if String(video.owner._id) === String(loggedInUser._id)
             a(href=`${video.id}/edit`) Edit Video &rarr;
@@ -30,18 +42,21 @@ block content
             a(href=`${video.id}/delete`) Delete Video &rarr;
     if loggedIn
         div.video__add-comments 
-            form.video__comment-form#commentForm(data-url=loggedInUser.avatarUrl, data-username=loggedInUser.username) 
+            form.video__comment-form#commentForm(data-url=loggedInUser.avatarUrl, data-username=loggedInUser.username, data-userid=loggedInUser._id) 
                 textarea(cols="30", rows="10", placeholder="Write a nice comment...")
                 input(type="submit", value="Add Comment")
     div.video__comments 
         ul 
             each comment in video.comments.reverse()
                 li.video__comment(data-id=comment.id)
-                    img(src=comment.avatarUrl,crossorigin)
+                    a(href=`/users/${comment.owner._id}`)                
+                        img(src=comment.avatarUrl,crossorigin)
                     div.video__comment_info 
                         div.video__comment_owner
                             span=comment.username
                             span.video__comment_time=comment.timeString
+                            if comment.edited
+                                span.edited (수정됨)
                         div.video__comment_main
                             div.video__comment_main_text
                                 span.text #{comment.text}
@@ -49,7 +64,18 @@ block content
                                 div.video__comment_main_btn
                                     span.del ❌
                                     i.fas.fa-edit.edit
+                        div
+                            if (!loggedIn)
+                                +likeIconTwo("notLog", comment)
+                            else 
+                                if comment.likeUser.map(item=>String(item)).includes(String(loggedInUser._id))
+                                    +likeIconTwo("like", comment)
+                                else if comment.dislikeUser.map(item=>String(item)).includes(String(loggedInUser._id))
+                                    +likeIconTwo("dislike", comment)
+                                else 
+                                    +likeIconTwo("no", comment)
 block scripts 
     script(src="/static/js/videoPlayer.js")
+    script(src="/static/js/videoLike.js")
     if loggedIn
         script(src="/static/js/commentSection.js")

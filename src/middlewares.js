@@ -27,14 +27,13 @@ export const publicOnlyMiddleware = (req, res, next) => {
 };
 
 export const commentProtector = async (req, res, next) => {
-  console.log("middleware working!!");
   const {
     params: { commentId },
   } = req;
   const comment = await Comment.findById(commentId).populate("owner");
-  if (res.locals.loggedInUser._id !== comment.owner._id) {
+  if (String(req.session.user._id) !== String(comment.owner._id)) {
     req.flash("bad", "You are not owner of this comment");
-    return res.redirect("/");
+    return res.sendStatus(400);
   }
   next();
 };

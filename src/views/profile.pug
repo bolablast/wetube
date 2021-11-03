@@ -5,8 +5,39 @@ block content
     div.profile__data
         img(src=user.avatarUrl,crossorigin).avatar
         h3=user.name
+    div.typeOfSection 
+        section.typeOfSection_video.notShow
+            span 동영상
+        section.typeOfSection_likeVideo 
+            span 좋아요한 동영상 
+        section.typeOfSection_comment
+            span 댓글 
     div.video-grid
         each video in user.videos
             +video(video)
         else
             span.empty__message No videos found 
+    div.video-grid.likeVideo-grid
+        each video in user.likeVideo
+            +video(video)
+        else 
+            span.empty__message No videos found
+    div.comment-grid 
+        each comment in user.comments 
+            div.comment-grid_container
+                div
+                    div.comment-grid_container__img
+                        img(src="/"+comment.video.thumbUrl, crossorigin)
+                        div.comment-grid_container__info
+                            span=comment.video.title 
+                            span=comment.video.owner.name
+                div.comment-grid_container_info_box
+                    div.comment-grid_container__text
+                        span=comment.text
+                    div.comment-grid_container__info 
+                        i.far.fa-thumbs-up.fa-x
+                        span=comment.like
+                        i.far.fa-thumbs-down.fa-x
+                        span=comment.dislike
+block scripts  
+    script(src="/static/js/profile.js")

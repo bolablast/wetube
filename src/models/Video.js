@@ -9,6 +9,7 @@ const videoSchema = new mongoose.Schema({
   thumbUrl: { type: String, required: true },
   description: { type: String, required: true, trim: true, minLength: 2 },
   createdAt: { type: Date, required: true, default: Date.now },
+  timeString: { type: String, default: "방금 전" },
   hashtags: [{ type: String, trim: true }],
   meta: {
     views: { type: Number, default: 0, required: true },
@@ -16,6 +17,8 @@ const videoSchema = new mongoose.Schema({
   },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
+  like: { type: Number, default: 0 },
+  dislike: { type: Number, default: 0 },
 });
 
 videoSchema.static("formatHashtags", function (hashtags) {
