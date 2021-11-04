@@ -154,6 +154,7 @@ export const postEdit = async (req, res) => {
   } = req;
   const exsitsUsername = await User.exists({ username });
   const exsitsEmail = await User.exists({ email });
+  console.log(file.location);
   if (
     req.session.user.username == username &&
     req.session.user.email == email
@@ -161,12 +162,13 @@ export const postEdit = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       _id,
       {
-        avatarUrl: file ? "/" + file.path : avatarUrl,
+        avatarUrl: file ? +file.location : avatarUrl,
         name,
         location,
       },
       { new: true }
     );
+    console.log(updatedUser);
     req.session.user = updatedUser;
     return res.redirect("/");
   } else if (
@@ -177,13 +179,14 @@ export const postEdit = async (req, res) => {
       const updatedUser = await User.findByIdAndUpdate(
         _id,
         {
-          avatarUrl: file ? "/" + file.path : avatarUrl,
+          avatarUrl: file ? +file.location : avatarUrl,
           name,
           username,
           location,
         },
         { new: true }
       );
+      console.log(updatedUser);
       req.session.user = updatedUser;
       return res.redirect("/");
     } else {
@@ -200,13 +203,14 @@ export const postEdit = async (req, res) => {
       const updatedUser = await User.findByIdAndUpdate(
         _id,
         {
-          avatarUrl: file ? "/" + file.path : avatarUrl,
+          avatarUrl: file ? +file.location : avatarUrl,
           name,
           email,
           location,
         },
         { new: true }
       );
+      console.log(updatedUser);
       req.session.user = updatedUser;
       return res.redirect("/");
     } else {
@@ -219,7 +223,7 @@ export const postEdit = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       _id,
       {
-        avatarUrl: file ? "/" + file.path : avatarUrl,
+        avatarUrl: file ? file.location : avatarUrl,
         name,
         email,
         username,
@@ -227,6 +231,7 @@ export const postEdit = async (req, res) => {
       },
       { new: true }
     );
+    console.log(updatedUser);
     req.session.user = updatedUser;
     return res.redirect("/");
   }
